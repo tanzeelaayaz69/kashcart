@@ -6,7 +6,7 @@
   "homepage": "https://tanzeelaayaz69.github.io/kashcart/",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && copy dist\\index.html dist\\404.html",
+    "build": "vite build && node -e \"require('fs').copyFileSync('dist/index.html', 'dist/404.html')\"",
     "lint": "eslint .",
     "lint:dualite": "eslint --config eslint.dualite.config.js .",
     "tsc:dualite": "yarn tsc -p tsconfig.dualite.json",
