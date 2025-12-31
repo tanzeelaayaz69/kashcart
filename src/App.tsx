@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
+
+const basename = import.meta.env.BASE_URL === '/kashcart/' ? '/kashcart' : '';
 import { Home } from './pages/Home';
 import { MartDetails } from './pages/MartDetails';
 import { Cart } from './pages/Cart';
@@ -54,7 +56,7 @@ function App() {
       <AuthProvider>
         <CartProvider>
           <LocationProvider>
-            <BrowserRouter>
+            <BrowserRouter basename={basename}>
               <Layout>
                 <Routes>
                   <Route path="/login" element={<Login />} />

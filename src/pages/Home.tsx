@@ -4,6 +4,7 @@ import { CATEGORIES } from '../data/mockData';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import { getAssetPath } from '../lib/utils';
 
 
 const TIME_BASED_IMAGES = {
@@ -55,6 +56,7 @@ export const Home = () => {
   };
 
   const greeting = getGreeting();
+  const currentImagesWithBase = currentImages.map(img => getAssetPath(img));
 
   useEffect(() => {
     setCurrentImageIndex(0);
@@ -80,7 +82,7 @@ export const Home = () => {
           <AnimatePresence mode="wait">
             <motion.img
               key={`${timeOfDay}-${currentImageIndex}`}
-              src={currentImages[currentImageIndex]}
+              src={currentImagesWithBase[currentImageIndex]}
               alt="Kashmir"
               initial={{ opacity: 0, scale: 1.15 }}
               animate={{ opacity: 1, scale: 1 }}

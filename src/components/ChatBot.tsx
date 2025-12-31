@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { X, Send, Minus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { cn } from '../lib/utils';
 import { MascotHead, MASCOT_IMAGES } from './Mascot';
 import { useTheme } from '../context/ThemeContext';
+import { cn, getAssetPath } from '../lib/utils';
 
 interface Message {
     id: string;
@@ -178,7 +178,7 @@ export const ChatBot = () => {
                 {isOpen ? <X size={28} /> : (
                     <div className="relative w-full h-full flex items-center justify-center">
                         <img
-                            src={theme === 'dark' ? '/images/mascot/mir-idea-dark.png' : MASCOT_IMAGES.idea}
+                            src={theme === 'dark' ? getAssetPath('/images/mascot/mir-idea-dark.png') : getAssetPath(MASCOT_IMAGES.idea)}
 
                             alt="Chat"
                             className="w-[120%] h-[120%] object-cover object-top translate-y-1.5 mix-blend-multiply dark:mix-blend-plus-lighter"

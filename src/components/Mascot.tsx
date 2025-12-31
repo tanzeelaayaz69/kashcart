@@ -1,6 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { ReactNode } from 'react';
-import { cn } from '../lib/utils';
+import { cn, getAssetPath } from '../lib/utils';
 import { X, Search } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
@@ -56,14 +56,14 @@ export const Mascot = ({
 
     const getMascotImage = (expr: MascotExpression) => {
         if (theme === 'dark') {
-            if (expr === 'marts') return '/images/mascot/mir-all-marts-dark.png';
-            if (expr === 'cart' || expr === 'happy-bag') return '/images/mascot/mir-cart-dark.png';
-            if (expr === 'no-products') return '/images/mascot/mir-no-products-dark.png';
-            if (expr === 'concerned') return '/images/mascot/mir-sad-empty-dark.png';
-            if (expr === 'search') return '/images/mascot/mir-search-dark.png';
-            if (expr === 'idea') return '/images/mascot/mir-idea-dark.png';
+            if (expr === 'marts') return getAssetPath('/images/mascot/mir-all-marts-dark.png');
+            if (expr === 'cart' || expr === 'happy-bag') return getAssetPath('/images/mascot/mir-cart-dark.png');
+            if (expr === 'no-products') return getAssetPath('/images/mascot/mir-no-products-dark.png');
+            if (expr === 'concerned') return getAssetPath('/images/mascot/mir-sad-empty-dark.png');
+            if (expr === 'search') return getAssetPath('/images/mascot/mir-search-dark.png');
+            if (expr === 'idea') return getAssetPath('/images/mascot/mir-idea-dark.png');
         }
-        return MASCOT_IMAGES[expr];
+        return getAssetPath(MASCOT_IMAGES[expr]);
     };
 
     if (variant === 'card') {
@@ -146,7 +146,7 @@ export const Mascot = ({
                     </div>
                     <div className="w-20 h-20">
                         <img
-                            src={MASCOT_IMAGES.night}
+                            src={getAssetPath(MASCOT_IMAGES.night)}
                             alt="Mir Night"
                             className="w-full h-full object-contain opacity-80 mix-blend-multiply dark:mix-blend-plus-lighter"
                         />
@@ -230,7 +230,7 @@ export const Mascot = ({
 
 export const MascotHead = () => {
     const { theme } = useTheme();
-    const image = theme === 'dark' ? '/images/mascot/mir-idea-dark.png' : MASCOT_IMAGES.idea;
+    const image = theme === 'dark' ? getAssetPath('/images/mascot/mir-idea-dark.png') : getAssetPath(MASCOT_IMAGES.idea);
 
     return (
         <div className="relative flex-shrink-0">
