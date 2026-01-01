@@ -49,9 +49,12 @@ export const MartDetails = () => {
     setIsModalOpen(true);
   };
 
-  const handleModalConfirm = (isRecurring: boolean, frequency?: RecurringFrequency) => {
+  const handleAddToCartConfirm = (orderType: 'one-time' | 'recurring', frequency?: string) => {
     if (selectedProduct) {
-      addToCart(selectedProduct, isRecurring, frequency);
+      const isRecurring = orderType === 'recurring';
+      const recurringFreq = frequency as RecurringFrequency;
+      addToCart(selectedProduct, isRecurring, recurringFreq);
+      setIsModalOpen(false);
       setSelectedProduct(null);
     }
   };
@@ -222,7 +225,7 @@ export const MartDetails = () => {
       <AddToCartModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
-        onConfirm={handleModalConfirm}
+        onAdd={handleAddToCartConfirm}
         productName={selectedProduct?.name || ''}
       />
     </div>

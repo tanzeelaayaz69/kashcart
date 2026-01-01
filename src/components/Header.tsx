@@ -1,24 +1,18 @@
-import { MapPin, Bell, ChevronDown, Search, Sun, Moon } from 'lucide-react';
+import { Bell, Search, Sun, Moon } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useLocation } from '../context/LocationContext';
 import { useTheme } from '../context/ThemeContext';
 
 export const Header = () => {
-  const { location, isLoading } = useLocation();
   const { theme, toggleTheme } = useTheme();
 
   return (
     <div className="sticky top-0 z-40 bg-white/80 dark:bg-kash-dark-bg/80 backdrop-blur-md border-b border-gray-100 dark:border-kash-dark-border px-4 py-3 transition-colors duration-300">
       <div className="flex items-center justify-between">
         <div className="flex flex-col">
-          <div className="flex items-center text-kash-walnut-dark dark:text-kash-green-100 font-bold text-lg cursor-pointer">
-            <MapPin size={18} className="text-kash-green-600 dark:text-kash-green-400 mr-1" />
-            <span className="truncate max-w-[200px]">
-              {isLoading ? 'Detecting...' : (location?.city || "Select Location")}
-            </span>
-            <ChevronDown size={16} className="ml-1 text-gray-400" />
+          <div className="flex items-center text-kash-walnut-dark dark:text-kash-green-100 font-bold text-2xl cursor-pointer">
+            <span className="font-outfit">Welcome</span>
           </div>
-          <span className="text-xs text-gray-500 dark:text-gray-400 ml-5">Delivering in 12 mins</span>
+          <span className="text-xs text-gray-500 dark:text-gray-400 ml-5"></span>
         </div>
 
         <div className="flex items-center gap-2">

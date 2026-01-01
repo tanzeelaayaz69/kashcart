@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react';
-import { User as UserIcon, MapPin, CreditCard, Settings, LogOut, ChevronRight, ShoppingBag, X, Camera, Save, Phone, Mail } from 'lucide-react';
+import { User as UserIcon, CreditCard, Settings, LogOut, ChevronRight, ShoppingBag, X, Camera, Save, Phone, Mail } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { cn, formatPrice } from '../lib/utils';
 import { api } from '../services/api';
 import { Order } from '../types';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useLocation } from '../context/LocationContext';
 
 export const Profile = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const { location, isLoading: isLocationLoading } = useLocation();
   const [orders, setOrders] = useState<Order[]>([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({ name: user?.name || '', phone: user?.phone || '', email: 'tanzeela@example.com' });
@@ -25,15 +23,10 @@ export const Profile = () => {
   }, []);
 
   const menuItems = [
-    {
-      icon: MapPin,
-      label: 'Addresses',
-      sub: isLocationLoading ? 'Locating...' : (location?.city || user?.addresses[0]?.value || 'Add Address'),
-      path: '/addresses',
-      color: 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400'
-    },
     { icon: CreditCard, label: 'Payment Methods', sub: 'UPI, Cards, Wallet', path: '/payment-methods', color: 'bg-purple-50 text-purple-600 dark:bg-purple-900/20 dark:text-purple-400' },
-    { icon: Settings, label: 'Settings', sub: 'Theme, Language, Privacy', path: '/settings', color: 'bg-orange-50 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400' },
+    { icon: Mail, label: 'Support & Help', sub: 'Contact our team', path: '/support', color: 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400' },
+    { icon: UserIcon, label: 'Live Chat', sub: 'Chat with Mir', path: '/chat', color: 'bg-kash-green-50 text-kash-green-600 dark:bg-kash-green-900/20 dark:text-kash-green-400' },
+    { icon: Settings, label: 'Settings', sub: 'Theme, Notifications, Privacy', path: '/settings', color: 'bg-orange-50 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400' },
   ];
 
   const handleMenuClick = (path: string) => {

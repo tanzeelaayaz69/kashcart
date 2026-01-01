@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, ReactNode, FC } from 'react';
 import { Product } from '../data/mockData';
 
-export type RecurringFrequency = 'daily' | 'weekly' | 'monthly' | null;
+export type RecurringFrequency = 'daily' | '2days' | 'weekly' | 'monthly' | null;
 
 interface CartItem extends Product {
   quantity: number;

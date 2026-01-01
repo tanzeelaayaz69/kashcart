@@ -22,18 +22,17 @@ import { LocationProvider } from './context/LocationContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider, useAuth } from './context/AuthContext';
 
-import { ChatBot } from './components/ChatBot';
+
 
 const Layout = ({ children }: { children: ReactNode }) => {
   const location = useLocation();
-  const hideNav = location.pathname === '/login';
+  const hideNav = ['/login', '/payment'].includes(location.pathname);
 
   return (
     <div className="w-full max-w-[430px] mx-auto bg-white dark:bg-kash-dark-bg min-h-[100dvh] shadow-2xl relative transition-colors duration-300 overflow-x-hidden">
       {children}
       {!hideNav && (
         <>
-          <ChatBot />
           <BottomNav />
         </>
       )}

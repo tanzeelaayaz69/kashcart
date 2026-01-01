@@ -5,9 +5,11 @@ import { Star, Clock, ArrowLeft, Search, X } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Skeleton } from '../components/ui/Skeleton';
-import { Mascot } from '../components/Mascot';
+import { getAssetPath } from '../lib/utils';
+import { useTheme } from '../context/ThemeContext';
 
 export const Marts = () => {
+    const { theme } = useTheme();
     const [marts, setMarts] = useState<Mart[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -104,12 +106,44 @@ export const Marts = () => {
 
             {!isSearching && (
                 <div className="px-4 mt-6">
-                    <Mascot
-                        variant="card"
-                        expression="marts"
-                        title="All marts"
-                        message="I've handpicked the best marts near you. From fresh vegetables to pantry essentials, it's all just a tap away."
-                    />
+                    <div className="bg-white dark:bg-kash-dark-card border border-gray-100 dark:border-kash-dark-border rounded-[2rem] p-5 shadow-sm overflow-hidden relative group">
+                        {/* Subtle Background Accent */}
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-kash-green-500/5 rounded-full -mr-16 -mt-16 blur-2xl" />
+
+                        <div className="flex items-center gap-5 relative z-10">
+                            {/* Professional Mascot Placement */}
+                            <motion.div
+                                initial={{ scale: 0.9, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                className="w-20 h-20 bg-kash-green-50 dark:bg-kash-green-900/10 rounded-2xl flex-shrink-0 flex items-center justify-center border border-kash-green-100 dark:border-kash-green-900/20 overflow-hidden shadow-inner"
+                            >
+                                <motion.img
+                                    animate={{ y: [0, -3, 0] }}
+                                    transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                                    src={theme === 'dark' ? getAssetPath('/images/mascot/mir-all-marts-dark.png') : getAssetPath('/images/mascot/mir-all-marts.png')}
+                                    alt="Mir"
+                                    className="w-full h-full object-contain scale-110 translate-y-0.5"
+                                />
+                            </motion.div>
+
+                            <div className="flex-1">
+                                <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-1 tracking-tight">Explore Local Marts</h2>
+                                <p className="text-sm text-gray-500 dark:text-gray-400 font-medium leading-relaxed">
+                                    I've handpicked the best stores near you in Srinagar.
+                                </p>
+                                <div className="flex gap-3 mt-3">
+                                    <div className="flex items-center gap-1.5 bg-gray-50 dark:bg-gray-800/50 px-2.5 py-1 rounded-full border border-gray-100 dark:border-gray-700">
+                                        <span className="w-1.5 h-1.5 bg-kash-green-500 rounded-full animate-pulse" />
+                                        <span className="text-[9px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Fast Delivery</span>
+                                    </div>
+                                    <div className="flex items-center gap-1.5 bg-gray-50 dark:bg-gray-800/50 px-2.5 py-1 rounded-full border border-gray-100 dark:border-gray-700">
+                                        <span className="w-1.5 h-1.5 bg-kash-green-500 rounded-full animate-pulse" />
+                                        <span className="text-[9px] font-black text-gray-500 dark:text-gray-400 uppercase tracking-widest">Verified</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             )}
 
@@ -131,19 +165,35 @@ export const Marts = () => {
                         ))
                     ) : filteredMarts.length === 0 ? (
                         <div className="py-10">
-                            <Mascot
-                                variant="card"
-                                expression="concerned"
-                                title={searchQuery ? "No marts match your search" : "No marts nearby yet"}
-                                message={searchQuery
-                                    ? "I couldn't find any marts with that name. Try a different keyword or browse the full list!"
-                                    : "We're expanding to your area soon. Want to be the first to know when we arrive?"
-                                }
-                                action={!searchQuery ? {
-                                    label: "Request Mart < 1 km",
-                                    onClick: () => { }
-                                } : undefined}
-                            />
+                            <div className="text-center py-10 px-4">
+                                <motion.div
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    className="w-52 h-52 mx-auto mb-8 bg-kash-green-50 dark:bg-kash-green-900/10 rounded-[3rem] flex items-center justify-center border border-kash-green-100 dark:border-kash-green-900/20 shadow-inner overflow-hidden"
+                                >
+                                    <motion.img
+                                        animate={{ y: [0, -12, 0] }}
+                                        transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+                                        src={theme === 'dark' ? getAssetPath('/images/mascot/mir-sad-empty-dark.png') : getAssetPath('/images/mascot/mir-sad-empty.png')}
+                                        alt="Mascot"
+                                        className="w-full h-full object-contain scale-110 mix-blend-multiply dark:mix-blend-plus-lighter drop-shadow-2xl"
+                                    />
+                                </motion.div>
+                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                                    {searchQuery ? "No marts match your search" : "No marts nearby yet"}
+                                </h3>
+                                <p className="text-gray-500 dark:text-gray-400 mb-6 max-w-md mx-auto">
+                                    {searchQuery
+                                        ? "I couldn't find any marts with that name. Try a different keyword or browse the full list!"
+                                        : "We're expanding to your area soon. Want to be the first to know when we arrive?"
+                                    }
+                                </p>
+                                {!searchQuery && (
+                                    <button className="bg-kash-green-500 hover:bg-kash-green-600 text-white py-3 px-8 rounded-2xl font-bold text-sm transition-colors">
+                                        Request Mart &lt; 1 km
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     ) : (
                         filteredMarts.map((mart, idx) => (

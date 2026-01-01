@@ -73,14 +73,14 @@ export const ChatBot = () => {
     };
 
     return (
-        <div className="fixed bottom-24 right-4 z-[100] sm:right-[calc(50%-200px)]">
+        <div className="fixed bottom-28 right-2 z-[40] sm:right-[calc(50%-215px)]">
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
                         initial={{ opacity: 0, y: 20, scale: 0.95, originY: 'bottom', originX: 'right' }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 20, scale: 0.95 }}
-                        className="absolute bottom-16 right-0 w-[320px] h-[450px] bg-white dark:bg-kash-dark-card rounded-[2.5rem] shadow-2xl border border-gray-100 dark:border-kash-dark-border flex flex-col overflow-hidden"
+                        className="absolute bottom-24 right-0 w-[320px] h-[450px] bg-white dark:bg-kash-dark-card rounded-[2.5rem] shadow-2xl border border-gray-100 dark:border-kash-dark-border flex flex-col overflow-hidden"
                     >
                         {/* Chat Header */}
                         <div className="p-4 bg-white dark:bg-kash-dark-card border-b border-gray-100 dark:border-kash-dark-border flex items-center justify-between">
@@ -169,24 +169,23 @@ export const ChatBot = () => {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsOpen(!isOpen)}
                 className={cn(
-                    "w-16 h-16 rounded-[2rem] shadow-2xl flex items-center justify-center transition-all duration-300 border-2 overflow-hidden",
+                    "w-20 h-20 rounded-[2rem] shadow-2xl flex items-center justify-center transition-all duration-300 border-2 overflow-hidden",
                     isOpen
                         ? "bg-white dark:bg-kash-dark-card text-gray-500 border-gray-100 dark:border-gray-700"
-                        : "bg-kash-green-50 dark:bg-kash-green-900/20 border-kash-green-100 dark:border-kash-green-900/30"
+                        : "bg-kash-green-50 dark:bg-kash-green-900/20 border-kash-green-100 dark:border-kash-green-900/40 shadow-kash-green-500/20"
                 )}
             >
-                {isOpen ? <X size={28} /> : (
+                {isOpen ? <X size={24} /> : (
                     <div className="relative w-full h-full flex items-center justify-center">
                         <img
                             src={theme === 'dark' ? getAssetPath('/images/mascot/mir-idea-dark.png') : getAssetPath(MASCOT_IMAGES.idea)}
-
                             alt="Chat"
-                            className="w-[120%] h-[120%] object-cover object-top translate-y-1.5 mix-blend-multiply dark:mix-blend-plus-lighter"
+                            className="w-[140%] h-[140%] object-cover object-top translate-y-2.5 mix-blend-multiply dark:mix-blend-plus-lighter"
                         />
                         <motion.div
-                            animate={{ scale: [1, 1.2, 1] }}
+                            animate={{ scale: [1, 1.2, 1], opacity: [0.8, 1, 0.8] }}
                             transition={{ repeat: Infinity, duration: 2 }}
-                            className="absolute top-3 right-3 w-3.5 h-3.5 bg-red-500 border-2 border-white dark:border-kash-dark-card rounded-full z-10 shadow-sm"
+                            className="absolute top-5 right-5 w-4 h-4 bg-red-500 border-2 border-white dark:border-kash-dark-card rounded-full z-10 shadow-lg"
                         />
                     </div>
                 )}

@@ -12,19 +12,36 @@ const STORAGE_KEYS = {
 
 export const api = {
   // Auth
-  login: async (phone: string): Promise<User> => {
+  login: async (phone: string, name?: string): Promise<User> => {
     await delay(1000);
-    const mockUser: User = {
-      id: 'u1',
-      name: 'Tanzeela',
+    const stored = localStorage.getItem(STORAGE_KEYS.USER);
+    if (stored) {
+      const user = JSON.parse(stored);
+      if (user.phone === phone) return user;
+    }
+
+    const newUser: User = {
+      id: `u_${Date.now()}`,
+      name: name || 'User',
       phone: phone,
       addresses: [
-        { id: 'a1', type: 'Home', value: 'H.No 12, Rajbagh Extension, Srinagar' },
-        { id: 'a2', type: 'Work', value: 'Civil Secretariat, Srinagar' }
+        { id: 'a1', type: 'Home', value: 'H.No 12, Rajbagh Extension, Srinagar' }
       ]
     };
-    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(mockUser));
-    return mockUser;
+    localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(newUser));
+    return newUser;
+  },
+
+  checkUser: async (phone: string): Promise<boolean> => {
+    await delay(500);
+    // In a real app, this would check the DB. 
+    // Here we'll just check if we have any user in localstorage with this phone.
+    const stored = localStorage.getItem(STORAGE_KEYS.USER);
+    if (stored) {
+      const user = JSON.parse(stored);
+      return user.phone === phone;
+    }
+    return false;
   },
 
   logout: async () => {

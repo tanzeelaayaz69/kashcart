@@ -89,13 +89,13 @@ export const PaymentMethods = () => {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setIsAdding(false)}
-                            className="fixed inset-0 bg-black/60 z-50 backdrop-blur-sm"
+                            className="fixed inset-0 bg-black/60 z-[60] backdrop-blur-sm"
                         />
                         <motion.div
                             initial={{ y: '100%' }}
                             animate={{ y: 0 }}
                             exit={{ y: '100%' }}
-                            className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-kash-dark-card rounded-t-[32px] p-6 max-w-[430px] mx-auto shadow-2xl"
+                            className="fixed bottom-0 left-0 right-0 z-[70] bg-white dark:bg-kash-dark-card rounded-t-[32px] p-6 pb-20 max-w-[430px] mx-auto shadow-2xl"
                         >
                             <div className="flex justify-between items-center mb-6">
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">Add Payment Method</h3>

@@ -75,7 +75,9 @@ export const Mascot = ({
                     className="bg-white dark:bg-kash-dark-card rounded-[2.5rem] p-8 shadow-xl border border-gray-100 dark:border-kash-dark-border text-center relative overflow-hidden w-full"
                 >
                     <div className="relative w-full aspect-[4/3] mx-auto mb-6 rounded-3xl overflow-hidden bg-white dark:bg-kash-dark-card">
-                        <img
+                        <motion.img
+                            animate={{ y: [0, -8, 0] }}
+                            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
                             src={getMascotImage(expression)}
                             alt="Mir"
                             className="w-full h-full object-contain relative z-10 scale-110"
@@ -84,6 +86,7 @@ export const Mascot = ({
                         {/* Soft ambient glow instead of edge-hiding vignette */}
                         <div className="absolute inset-0 z-0 bg-kash-green-500/5 blur-3xl opacity-50" />
                     </div>
+
 
                     {title && <h3 className="text-2xl font-black text-gray-900 dark:text-white mb-2">{title}</h3>}
                     <p className="text-gray-500 dark:text-gray-400 font-medium mb-8 leading-relaxed px-4">
@@ -231,6 +234,7 @@ export const Mascot = ({
 export const MascotHead = () => {
     const { theme } = useTheme();
     const image = theme === 'dark' ? getAssetPath('/images/mascot/mir-idea-dark.png') : getAssetPath(MASCOT_IMAGES.idea);
+
 
     return (
         <div className="relative flex-shrink-0">

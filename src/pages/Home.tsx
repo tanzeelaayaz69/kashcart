@@ -6,29 +6,14 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import { getAssetPath } from '../lib/utils';
 
-
-const TIME_BASED_IMAGES = {
-  morning: [
-    '/images/hero/morning-1.png', // Dal Lake Foggy Morning
-    '/images/hero/morning-2.png', // Pahalgam Valley
-    '/images/hero/morning-1.png', // Dal Lake (reuse)
-  ],
-  afternoon: [
-    '/images/hero/afternoon-1.png', // Tulip Garden Srinagar
-    '/images/hero/afternoon-2.png', // Gulmarg Meadows
-    '/images/hero/afternoon-1.png', // Tulip Garden (reuse)
-  ],
-  evening: [
-    '/images/hero/evening-1.png', // Dal Lake Houseboats Sunset
-    '/images/hero/evening-1.png', // Evening (reuse)
-    '/images/hero/evening-1.png', // Evening (reuse)
-  ],
-  night: [
-    '/images/hero/evening-1.png', // Evening works for night
-    '/images/hero/morning-1.png', // Misty lake works for night
-    '/images/hero/evening-1.png', // Evening (reuse)
-  ]
-};
+const ALL_HERO_IMAGES = [
+  '/images/hero/morning-3.png',
+  '/images/hero/morning-4.png',
+  '/images/hero/afternoon-3.png',
+  '/images/hero/evening-2.png',
+  '/images/hero/night-1.png',
+  '/images/hero/night-2.png',
+];
 
 export const Home = () => {
   const { user } = useAuth();
@@ -43,7 +28,7 @@ export const Home = () => {
   };
 
   const timeOfDay = getTimeOfDay();
-  const currentImages = TIME_BASED_IMAGES[timeOfDay];
+  const currentImagesWithBase = ALL_HERO_IMAGES.map(img => getAssetPath(img));
 
   const getGreeting = () => {
     const greetings = {
@@ -52,51 +37,47 @@ export const Home = () => {
       evening: { text: 'Good Evening', icon: '🌙' },
       night: { text: 'Good Night', icon: '💤' }
     };
-    return greetings[timeOfDay];
+    return greetings[timeOfDay as keyof typeof greetings];
   };
 
   const greeting = getGreeting();
-  const currentImagesWithBase = currentImages.map(img => getAssetPath(img));
-
-  useEffect(() => {
-    setCurrentImageIndex(0);
-  }, [timeOfDay]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentImageIndex((prev) => (prev + 1) % currentImages.length);
+      setCurrentImageIndex((prev) => (prev + 1) % ALL_HERO_IMAGES.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, [currentImages.length, timeOfDay]);
-
+  }, []);
 
 
   return (
-    <div className="pb-24 bg-gray-50 dark:bg-kash-dark-bg min-h-screen transition-colors duration-300">
+    <div className="pb-52 bg-gray-50 dark:bg-kash-dark-bg min-h-screen transition-colors duration-300">
       <Header />
 
       {/* Greeting Banner */}
       <div className="relative overflow-hidden mx-2 mt-2 rounded-3xl shadow-xl h-48">
         {/* Background Image Carousel */}
         <div className="absolute inset-0">
+          <div className={`absolute inset-0 transition-colors duration-1000 ${timeOfDay === 'morning' ? 'bg-blue-200' :
+            timeOfDay === 'afternoon' ? 'bg-orange-100' :
+              timeOfDay === 'evening' ? 'bg-indigo-900' : 'bg-slate-900'
+            }`} />
+
           <AnimatePresence mode="wait">
             <motion.img
               key={`${timeOfDay}-${currentImageIndex}`}
               src={currentImagesWithBase[currentImageIndex]}
-              alt="Kashmir"
-              initial={{ opacity: 0, scale: 1.15 }}
+              alt={`Kashmir ${timeOfDay}`}
+              initial={{ opacity: 0, scale: 1.1 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
-              transition={{ duration: 1.5, ease: "easeOut" }}
-              className="w-full h-full object-cover"
-              onLoad={() => console.log('Image loaded:', currentImages[currentImageIndex])}
-              onError={(e) => {
-                console.error('Image failed to load:', currentImages[currentImageIndex]);
-                console.error('Error:', e);
-              }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="absolute inset-0 w-full h-full object-cover"
+              loading="eager"
             />
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
+
+          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
         </div>
 
         {/* Content */}
@@ -115,8 +96,6 @@ export const Home = () => {
             </h1>
             <p className="text-gray-100 mt-2 text-sm font-medium opacity-90">What can we find for you today?</p>
           </motion.div>
-
-
         </div>
       </div>
 
@@ -150,9 +129,7 @@ export const Home = () => {
             </motion.div>
           ))}
         </div>
-
-
       </div>
-    </div >
+    </div>
   );
 };

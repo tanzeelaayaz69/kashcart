@@ -6,9 +6,10 @@ import { ArrowRight } from 'lucide-react';
 
 export const Login = () => {
   const [phone, setPhone] = useState('');
-  const [step, setStep] = useState<'phone' | 'otp'>('phone');
+  const [step, setStep] = useState<'phone' | 'otp' | 'username'>('phone');
   const [otp, setOtp] = useState('');
-  const { login } = useAuth();
+  const [name, setName] = useState('');
+  const { login, checkUser } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -25,8 +26,23 @@ export const Login = () => {
   const handleVerifyOtp = async (e: FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await login(phone);
+    const exists = await checkUser(phone);
+    if (exists) {
+      await login(phone);
+      navigate('/');
+    } else {
+      setStep('username');
+    }
+    setLoading(false);
+  };
+
+  const handleRegister = async (e: FormEvent) => {
+    e.preventDefault();
+    if (name.length < 3) return;
+    setLoading(true);
+    await login(phone, name);
     navigate('/');
+    setLoading(false);
   };
 
   return (
@@ -67,7 +83,7 @@ export const Login = () => {
                 {loading ? 'Sending...' : <>Continue <ArrowRight size={18} /></>}
               </button>
             </form>
-          ) : (
+          ) : step === 'otp' ? (
             <form onSubmit={handleVerifyOtp}>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Enter OTP</label>
               <p className="text-xs text-gray-500 mb-4">Sent to +91 {phone}</p>
@@ -84,7 +100,7 @@ export const Login = () => {
                 disabled={otp.length < 4 || loading}
                 className="w-full bg-kash-green-600 text-white py-3.5 rounded-xl font-bold hover:bg-kash-green-700 disabled:opacity-50 flex items-center justify-center gap-2 transition-colors"
               >
-                {loading ? 'Verifying...' : 'Login'}
+                {loading ? 'Verifying...' : 'Verify OTP'}
               </button>
               <button
                 type="button"
@@ -92,6 +108,26 @@ export const Login = () => {
                 className="w-full text-center text-sm text-gray-500 mt-4 hover:text-gray-700 dark:hover:text-gray-300"
               >
                 Change Number
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleRegister}>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Enter Your Name</label>
+              <p className="text-xs text-gray-500 mb-4">Complete your profile to continue</p>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-kash-green-500 dark:text-white mb-6 transition-all"
+                placeholder="John Doe"
+                autoFocus
+                required
+              />
+              <button
+                disabled={name.length < 3 || loading}
+                className="w-full bg-kash-green-600 text-white py-3.5 rounded-xl font-bold hover:bg-kash-green-700 disabled:opacity-50 flex items-center justify-center gap-2 transition-colors"
+              >
+                {loading ? 'Setting up...' : 'Get Started'}
               </button>
             </form>
           )}

@@ -51,15 +51,74 @@ export const PaymentSelection = () => {
     const navigate = useNavigate();
     const { cartTotal, clearCart } = useCart();
     const [selectedMethod, setSelectedMethod] = useState<PaymentMethod | null>(null);
+    const [isProcessing, setIsProcessing] = useState(false);
+    const [processingStep, setProcessingStep] = useState(0);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [orderId] = useState(() => 'KC' + Math.random().toString(36).substr(2, 6).toUpperCase());
+
+    const steps = [
+        "Verifying your details...",
+        "Authorizing transaction...",
+        "Communicating with Mart...",
+        "Finalizing your order..."
+    ];
 
     const handleProceed = () => {
         if (!selectedMethod) return;
 
-        // Simulating success
-        setIsSuccess(true);
-        clearCart();
+        setIsProcessing(true);
+        setProcessingStep(0);
+
+        // Dynamic step transitions
+        const interval = setInterval(() => {
+            setProcessingStep(prev => {
+                if (prev < steps.length - 1) return prev + 1;
+                return prev;
+            });
+        }, 800);
+
+        setTimeout(() => {
+            clearInterval(interval);
+            setIsProcessing(false);
+            setIsSuccess(true);
+            clearCart();
+        }, 3500);
     };
+
+    if (isProcessing) {
+        return (
+            <div className="min-h-screen bg-white dark:bg-kash-dark-bg flex flex-col items-center justify-center p-8 transition-colors duration-300">
+                <div className="relative">
+                    <div className="w-28 h-28 border-4 border-gray-100 dark:border-gray-800 rounded-full" />
+                    <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+                        className="absolute inset-0 w-28 h-28 border-4 border-kash-green-600 border-t-transparent rounded-full"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                        <Smartphone className="text-kash-green-600 animate-pulse" size={36} />
+                    </div>
+                </div>
+
+                <div className="mt-12 text-center">
+                    <motion.h2
+                        key={processingStep}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-2xl font-black text-gray-900 dark:text-white mb-3"
+                    >
+                        {steps[processingStep]}
+                    </motion.h2>
+                    <p className="text-gray-500 dark:text-gray-400 font-medium">Please do not close the app or press back</p>
+                </div>
+
+                <div className="mt-16 flex items-center gap-2 bg-gray-50 dark:bg-gray-800/50 px-4 py-2 rounded-full border border-gray-100 dark:border-gray-700">
+                    <div className="w-1.5 h-1.5 bg-kash-green-500 rounded-full animate-pulse" />
+                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Secure 256-bit SSL Encryption</span>
+                </div>
+            </div>
+        );
+    }
 
     if (isSuccess) {
         return (
@@ -73,7 +132,11 @@ export const PaymentSelection = () => {
                 </motion.div>
 
                 <h2 className="text-3xl font-black text-gray-900 dark:text-white mb-2 text-center">Order Placed!</h2>
-                <p className="text-gray-500 dark:text-gray-400 text-center mb-10 font-medium">Your items are being packed at the mart.</p>
+                <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xs font-bold text-gray-400 uppercase tracking-widest">Order ID:</span>
+                    <span className="text-xs font-black text-kash-green-600 dark:text-kash-green-400">{orderId}</span>
+                </div>
+                <p className="text-gray-500 dark:text-gray-400 text-center mb-10 font-medium max-w-[280px]">Your items are being packed at the mart. Expect delivery in 12-15 mins.</p>
 
                 <Mascot
                     expression="cart"
@@ -157,7 +220,7 @@ export const PaymentSelection = () => {
             </div>
 
             {/* Proceed Button */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-kash-dark-card border-t border-gray-200 dark:border-kash-dark-border p-4 max-w-[430px] mx-auto">
+            <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-kash-dark-card border-t border-gray-200 dark:border-kash-dark-border p-4 max-w-[430px] mx-auto shadow-[0_-4px_10px_rgba(0,0,0,0.05)]">
                 <button
                     onClick={handleProceed}
                     disabled={!selectedMethod}

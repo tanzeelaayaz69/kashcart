@@ -34,7 +34,7 @@ export const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-kash-dark-bg pb-32 transition-colors duration-300">
+    <div className="min-h-screen bg-gray-50 dark:bg-kash-dark-bg pb-48 transition-colors duration-300">
       {/* Header */}
       <div className="bg-white dark:bg-kash-dark-card p-4 flex items-center shadow-sm sticky top-0 z-10 transition-colors duration-300">
         <button onClick={() => navigate(-1)} className="mr-4 text-gray-700 dark:text-gray-200">
@@ -105,6 +105,7 @@ export const Cart = () => {
                           className="text-[10px] font-bold bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md px-1 py-1 focus:ring-1 focus:ring-kash-green-500 outline-none text-gray-700 dark:text-gray-200"
                         >
                           <option value="daily">Daily</option>
+                          <option value="2days">Every 2 Days</option>
                           <option value="weekly">Weekly</option>
                           <option value="monthly">Monthly</option>
                         </select>
@@ -153,17 +154,11 @@ export const Cart = () => {
           </div>
         </div>
 
-        {/* Trust Banner Mascot */}
-        <Mascot
-          expression="happy-bag"
-          title="Quality Assured"
-          message="Every item in your cart is quality checked by our team at the mart before being packed. Guaranteed fresh and safe!"
-          variant="inline"
-        />
+
       </div>
 
       {/* Footer */}
-      <div className="fixed bottom-20 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white dark:bg-kash-dark-card border-t border-gray-100 dark:border-kash-dark-border p-4 shadow-lg z-40 transition-colors">
+      <div className="fixed bottom-20 left-0 right-0 z-50 bg-white dark:bg-kash-dark-card border-t border-gray-100 dark:border-kash-dark-border p-4 shadow-[0_-4px_10px_rgba(0,0,0,0.05)] max-w-[430px] mx-auto transition-colors">
         <button
           onClick={handleCheckout}
           className="w-full bg-kash-green-700 text-white py-3.5 rounded-xl font-bold text-lg shadow-lg shadow-green-200 dark:shadow-none flex justify-between px-6 items-center"

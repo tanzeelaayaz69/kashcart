@@ -5,7 +5,8 @@ import { api } from '../services/api';
 interface AuthContextType {
   user: User | null;
   isLoading: boolean;
-  login: (phone: string) => Promise<void>;
+  login: (phone: string, name?: string) => Promise<void>;
+  checkUser: (phone: string) => Promise<boolean>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
 }
@@ -30,14 +31,18 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
     initAuth();
   }, []);
 
-  const login = async (phone: string) => {
+  const login = async (phone: string, name?: string) => {
     setIsLoading(true);
     try {
-      const user = await api.login(phone);
+      const user = await api.login(phone, name);
       setUser(user);
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const checkUser = async (phone: string) => {
+    return await api.checkUser(phone);
   };
 
   const logout = async () => {
@@ -48,7 +53,7 @@ export const AuthProvider: FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isLoading, login, logout, isAuthenticated: !!user }}>
+    <AuthContext.Provider value={{ user, isLoading, login, checkUser, logout, isAuthenticated: !!user }}>
       {children}
     </AuthContext.Provider>
   );

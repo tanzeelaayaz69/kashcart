@@ -1,4 +1,4 @@
-import { ArrowLeft, Moon, Sun, Bell, Globe, Shield, Info, ChevronRight, X, Check } from 'lucide-react';
+import { ArrowLeft, Moon, Sun, Bell, Shield, Info, ChevronRight, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -22,7 +22,6 @@ export const Settings = () => {
     const navigate = useNavigate();
     const { theme, toggleTheme } = useTheme();
     const [activeModal, setActiveModal] = useState<string | null>(null);
-    const [language, setLanguage] = useState('English (US)');
 
     const closeModal = () => setActiveModal(null);
 
@@ -42,12 +41,6 @@ export const Settings = () => {
                     label: 'Notifications',
                     sub: 'Sound, Vibration, Banner',
                     action: () => navigate('/notifications'),
-                },
-                {
-                    icon: Globe,
-                    label: 'App Language',
-                    sub: language,
-                    action: () => setActiveModal('language'),
                 }
             ]
         },
@@ -123,9 +116,7 @@ export const Settings = () => {
                     </div>
                 ))}
 
-                <p className="text-center text-xs text-gray-400 py-4">
-                    Made with ❤️ for Kashmir
-                </p>
+
             </div>
 
             {/* Modals & Bottom Sheets */}
@@ -155,25 +146,6 @@ export const Settings = () => {
                                 </button>
                             </div>
 
-                            {activeModal === 'language' && (
-                                <div className="space-y-3">
-                                    {['English (US)', 'Kashmiri', 'Urdu', 'Hindi'].map((lang) => (
-                                        <button
-                                            key={lang}
-                                            onClick={() => { setLanguage(lang); closeModal(); }}
-                                            className={`w-full p-4 rounded-2xl flex items-center justify-between border-2 transition-all ${language === lang
-                                                    ? 'border-kash-green-600 bg-kash-green-50/50 dark:bg-kash-green-900/10'
-                                                    : 'border-transparent bg-gray-50 dark:bg-gray-800/50'
-                                                }`}
-                                        >
-                                            <span className={`font-semibold ${language === lang ? 'text-kash-green-700 dark:text-kash-green-400' : 'text-gray-700 dark:text-gray-300'}`}>
-                                                {lang}
-                                            </span>
-                                            {language === lang && <Check size={18} className="text-kash-green-600" />}
-                                        </button>
-                                    ))}
-                                </div>
-                            )}
 
                             {activeModal === 'privacy' && (
                                 <div className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed max-h-[40vh] overflow-y-auto pr-2 scrollbar-hide">
