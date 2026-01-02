@@ -1,26 +1,19 @@
-import { useEffect, useState } from 'react';
-import { User as UserIcon, CreditCard, Settings, LogOut, ChevronRight, ShoppingBag, X, Camera, Save, Phone, Mail } from 'lucide-react';
+import { useState } from 'react';
+import { User as UserIcon, CreditCard, Settings, LogOut, ChevronRight, X, Camera, Save, Phone, Mail } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { cn, formatPrice } from '../lib/utils';
-import { api } from '../services/api';
-import { Order } from '../types';
+import { cn } from '../lib/utils';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export const Profile = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const [orders, setOrders] = useState<Order[]>([]);
+
   const [isEditing, setIsEditing] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [editForm, setEditForm] = useState({ name: user?.name || '', phone: user?.phone || '', email: 'tanzeela@example.com' });
 
-  useEffect(() => {
-    const fetchOrders = async () => {
-      const data = await api.getOrders();
-      setOrders(data);
-    };
-    fetchOrders();
-  }, []);
+
 
   const menuItems = [
     { icon: CreditCard, label: 'Payment Methods', sub: 'UPI, Cards, Wallet', path: '/payment-methods', color: 'bg-purple-50 text-purple-600 dark:bg-purple-900/20 dark:text-purple-400' },
@@ -99,40 +92,10 @@ export const Profile = () => {
           </div>
         </div>
 
-        {/* Recent Orders Section */}
-        {orders.length > 0 && (
-          <div className="space-y-4">
-            <h3 className="text-[10px] font-black text-gray-400 dark:text-gray-500 uppercase tracking-[0.2em] ml-2 flex items-center gap-2">
-              Recent Activity
-            </h3>
-            <div className="bg-white dark:bg-kash-dark-card rounded-[2.5rem] shadow-xl shadow-gray-200/50 dark:shadow-none border border-gray-100 dark:border-kash-dark-border p-5">
-              <div className="space-y-6">
-                {orders.slice(0, 2).map(order => (
-                  <div key={order.id} className="flex justify-between items-center group">
-                    <div className="flex items-center gap-4">
-                      <div className="w-12 h-12 bg-gray-50 dark:bg-gray-800 rounded-2xl flex items-center justify-center text-gray-400">
-                        <ShoppingBag size={20} strokeWidth={1.5} />
-                      </div>
-                      <div>
-                        <p className="font-bold text-sm text-gray-800 dark:text-gray-200 group-hover:text-kash-green-600 transition-colors">{order.martName}</p>
-                        <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wider">{new Date(order.date).toLocaleDateString()} • {order.items.length} items</p>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-black text-sm text-gray-900 dark:text-white">{formatPrice(order.total)}</p>
-                      <span className="text-[9px] font-black text-kash-green-600 dark:text-kash-green-400 bg-kash-green-50 dark:bg-kash-green-900/30 px-3 py-1 rounded-full uppercase tracking-[0.1em] mt-1 inline-block border border-kash-green-100 dark:border-kash-green-900/50">
-                        {order.status}
-                      </span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+
 
         <button
-          onClick={logout}
+          onClick={() => setShowLogoutConfirm(true)}
           className="w-full bg-red-50/50 dark:bg-red-900/5 hover:bg-red-50 dark:hover:bg-red-900/10 text-red-600 dark:text-red-400 py-6 rounded-[2.5rem] font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-3 mt-4 transition-all active:scale-95 border border-red-100 dark:border-red-900/20 shadow-sm"
         >
           <LogOut size={16} />
@@ -238,6 +201,59 @@ export const Profile = () => {
                   <Save size={20} />
                   Save Changes
                 </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Logout Confirmation Bottom Sheet */}
+      <AnimatePresence>
+        {showLogoutConfirm && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setShowLogoutConfirm(false)}
+              className="fixed inset-0 bg-black/60 z-[90] backdrop-blur-sm"
+            />
+            <motion.div
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '100%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed bottom-0 left-0 right-0 z-[100] bg-white dark:bg-kash-dark-card rounded-t-[3rem] max-w-[430px] mx-auto shadow-2xl overflow-hidden p-8 pb-12"
+            >
+              <div className="flex flex-col items-center text-center space-y-6">
+                <div className="w-20 h-20 bg-red-50 dark:bg-red-900/20 rounded-full flex items-center justify-center text-red-500 mb-2">
+                  <LogOut size={32} />
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">Logging Out?</h3>
+                  <p className="text-gray-500 dark:text-gray-400 font-medium">
+                    Are you sure you want to sign out of your account?
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 w-full pt-4">
+                  <button
+                    onClick={() => setShowLogoutConfirm(false)}
+                    className="w-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white py-4 rounded-[1.5rem] font-bold text-sm tracking-wide hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={async () => {
+                      await logout();
+                      setShowLogoutConfirm(false);
+                    }}
+                    className="w-full bg-red-500 text-white py-4 rounded-[1.5rem] font-bold text-sm tracking-wide shadow-lg shadow-red-500/30 hover:bg-red-600 transition-colors"
+                  >
+                    Yes, Logout
+                  </button>
+                </div>
               </div>
             </motion.div>
           </>

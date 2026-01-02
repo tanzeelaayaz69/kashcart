@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Home, Store, ShoppingBag, User, MapPin } from 'lucide-react';
+import { Home, Store, ShoppingBag, User, Package } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { cn } from '../lib/utils';
 import { motion } from 'framer-motion';
@@ -11,7 +11,7 @@ export const BottomNav = () => {
     { icon: Home, label: 'Home', path: '/' },
     { icon: Store, label: 'Marts', path: '/marts' },
     { icon: ShoppingBag, label: 'Cart', path: '/cart', badge: itemCount },
-    { icon: MapPin, label: 'Track', path: '/track' },
+    { icon: Package, label: 'Orders', path: '/orders' },
     { icon: User, label: 'Profile', path: '/profile' },
   ];
 

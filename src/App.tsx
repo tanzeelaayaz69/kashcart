@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { BrowserRouter, Routes, Route, useLocation, Navigate } from 'react-router-dom';
 
 const basename = import.meta.env.BASE_URL === '/kashcart/' ? '/kashcart' : '';
+import { Orders } from './pages/Orders';
 import { Home } from './pages/Home';
 import { MartDetails } from './pages/MartDetails';
 import { Cart } from './pages/Cart';
@@ -64,6 +65,7 @@ function App() {
                   <Route path="/category/:id" element={<ProtectedRoute><Category /></ProtectedRoute>} />
                   <Route path="/cart" element={<ProtectedRoute><Cart /></ProtectedRoute>} />
                   <Route path="/track" element={<ProtectedRoute><TrackOrder /></ProtectedRoute>} />
+                  <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
                   <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                   <Route path="/search" element={<ProtectedRoute><Search /></ProtectedRoute>} />
                   <Route path="/marts" element={<ProtectedRoute><Marts /></ProtectedRoute>} />
